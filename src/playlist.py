@@ -36,3 +36,29 @@ class Playlist:
             self.current = previous
 
         return self.current.data
+
+    def remove_track(self, track):
+        node = self.tracks.find(track)
+
+        if node is None:
+            return False
+
+        if self.current == node:
+            if node.next is not None:
+                self.current = node.next
+            else:
+                previous = None
+                current = self.tracks.head
+
+                while current is not None and current != node:
+                    previous = current
+                    current = current.next
+
+                self.current = previous
+
+        self.tracks.remove(track)
+
+        if self.tracks.is_empty():
+            self.current = None
+
+        return True

@@ -74,3 +74,48 @@ def test_previous_track_stays_on_first_track():
     playlist.add_track("Song B")
 
     assert playlist.previous_track() == "Song A"
+
+def test_remove_track():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+    playlist.add_track("Song B")
+    playlist.add_track("Song C")
+
+    assert playlist.remove_track("Song B") is True
+    assert playlist.tracks.to_list() == ["Song A", "Song C"]
+
+
+def test_remove_current_track_moves_to_next():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+    playlist.add_track("Song B")
+    playlist.add_track("Song C")
+
+    playlist.next_track()
+
+    assert playlist.current.data == "Song B"
+
+    playlist.remove_track("Song B")
+
+    assert playlist.current.data == "Song C"
+
+
+def test_remove_last_track():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+
+    assert playlist.remove_track("Song A") is True
+    assert playlist.tracks.is_empty()
+    assert playlist.current is None
+
+
+def test_remove_missing_track():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+
+    assert playlist.remove_track("Song B") is False
+    assert playlist.tracks.to_list() == ["Song A"]
