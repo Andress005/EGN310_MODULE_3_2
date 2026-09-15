@@ -88,7 +88,7 @@ The application is deployed using Streamlit Community Cloud.
 
 Live application:
 
-*Add Streamlit deployment link here after deployment.*
+*https://egn310playlist.streamlit.app/*
 
 ## Author
 
