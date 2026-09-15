@@ -119,3 +119,93 @@ def test_remove_missing_track():
 
     assert playlist.remove_track("Song B") is False
     assert playlist.tracks.to_list() == ["Song A"]
+
+def test_move_track_forward():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+    playlist.add_track("Song B")
+    playlist.add_track("Song C")
+
+    playlist.move_track(0, 2)
+
+    assert playlist.tracks.to_list() == [
+        "Song B",
+        "Song C",
+        "Song A"
+    ]
+
+
+def test_move_track_backward():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+    playlist.add_track("Song B")
+    playlist.add_track("Song C")
+
+    playlist.move_track(2, 0)
+
+    assert playlist.tracks.to_list() == [
+        "Song C",
+        "Song A",
+        "Song B"
+    ]
+
+
+def test_move_track_same_position():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+    playlist.add_track("Song B")
+
+    playlist.move_track(1, 1)
+
+    assert playlist.tracks.to_list() == [
+        "Song A",
+        "Song B"
+    ]
+
+
+def test_move_track_invalid_index():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+    playlist.add_track("Song B")
+
+    try:
+        playlist.move_track(5, 0)
+        assert False
+    except IndexError:
+        assert True
+
+
+def test_move_track_negative_index():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+
+    try:
+        playlist.move_track(-1, 0)
+        assert False
+    except IndexError:
+        assert True
+
+
+def test_move_track_preserves_current_track():
+    playlist = Playlist()
+
+    playlist.add_track("Song A")
+    playlist.add_track("Song B")
+    playlist.add_track("Song C")
+
+    playlist.next_track()
+
+    playlist.move_track(1, 0)
+
+    assert playlist.tracks.to_list() == [
+        "Song B",
+        "Song A",
+        "Song C"
+    ]
+
+    assert playlist.current.data == "Song B"

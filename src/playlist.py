@@ -62,3 +62,27 @@ class Playlist:
             self.current = None
 
         return True
+
+    def move_track(self, old_index, new_index):
+        if old_index < 0 or new_index < 0:
+            raise IndexError("Index cannot be negative")
+
+        tracks = self.tracks.to_list()
+
+        if old_index >= len(tracks) or new_index >= len(tracks):
+            raise IndexError("Index out of range")
+
+        if old_index == new_index:
+            return
+
+        track = tracks.pop(old_index)
+        tracks.insert(new_index, track)
+
+        self.tracks = LinkedList()
+
+        for item in tracks:
+            self.tracks.append(item)
+
+        current_track = self.current.data if self.current is not None else None
+
+        self.current = self.tracks.find(current_track)
